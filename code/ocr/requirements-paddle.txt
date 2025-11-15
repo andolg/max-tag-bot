@@ -1,0 +1,6 @@
+flask
+pillow
+requests
+numpy
+paddleocr
+paddlex[ocr]==3.3.9

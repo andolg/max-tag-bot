@@ -1,0 +1,22 @@
+# База: PaddlePaddle GPU под CUDA 11.8
+FROM paddlepaddle/paddle:3.2.1-gpu-cuda11.8-cudnn8.9
+
+WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 && \
+    rm -rf /var/lib/apt/lists/*
+RUN python -m pip install --upgrade pip
+
+COPY code/ocr/requirements-paddle.txt /app/ocr-requirements.txt
+RUN python -m pip install --no-cache-dir -r /app/ocr-requirements.txt
+RUN python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+RUN python -m pip install -U hf_transfer
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+COPY code/ocr /app
+
+EXPOSE 5000
+
+ENV PYTHONUNBUFFERED=1 \
+    FLASK_ENV=production
+COPY deploy/official_models /root/.paddlex/official_models
+CMD ["python", "server.py"]

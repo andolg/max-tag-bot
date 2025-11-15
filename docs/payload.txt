@@ -1,0 +1,7 @@
+<route>?<key>=<val>&<key>=<val>
+
+route - адрес страницы (тип сообщения) через слеши (например /tags)
+key, val - ключи и значения как в URL (например ?group=<group_id>&tag=<tag_name>)
+
+Пример:
+/get_messages?group=<group_id>&tag=<tag_name>
